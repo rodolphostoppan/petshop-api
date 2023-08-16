@@ -1,0 +1,14 @@
+{
+  "name": "rodolpho.toppan/php-guanabara",
+  "autoload": {
+    "psr-4": {
+      "app\\": "app/"
+    }
+  },
+  "require": {
+    "slim/slim": "^4.12",
+    "league/plates": "^3.5",
+    "phpmailer/phpmailer": "^6.8",
+    "slim/psr7": "^1.6"
+  }
+}
