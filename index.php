@@ -5,7 +5,7 @@ $database = new PDO('sqlite:petshop.db', '', '');
 
 $errEmail = $errName = $errPhone = "";
 $name = $email = $phone = "";
-$message = "Vamos estar entrando em contato por ligação ou uma mensagem no WhatsApp";
+$message = "Estaremos entrando em contato por ligação ou uma mensagem no WhatsApp";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -48,14 +48,13 @@ function sendDataFormToDb($database, $name, $email, $phone)
     ]);
 }
 
-
-
 function showDataOfDb($database)
 {
     $query = $database->query('SELECT * FROM clients');
     $results = $query->fetchAll(PDO::FETCH_ASSOC);
     $json = json_encode($results);
     header('Content-Type: application/json');
+
     echo $json;
 }
 

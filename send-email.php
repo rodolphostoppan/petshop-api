@@ -4,7 +4,6 @@ require './vendor/autoload.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 
-
 function sendEmail($email, $name, $message)
 {
     date_default_timezone_set('Etc/UTC');
@@ -19,7 +18,7 @@ function sendEmail($email, $name, $message)
 
     $mail->setFrom('rodolphotoppan395@gmail.com', '');
     $mail->addAddress($email, $name);
-    $mail->Subject = 'PHPMailer SMTP test';
+    $mail->Subject = 'Contato site';
     $mail->Body = $message;
 
     if (!$mail->send()) {
