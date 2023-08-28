@@ -1,32 +1,14 @@
 <?php
+
 require 'send-email.php';
+
+header("Access-Control-Allow-Origin: *"); // Allow requests from any domain
+header("Content-Type: application/json; charset=UTF-8");
 
 $database = new PDO('sqlite:petshop.db', '', '');
 
-$errEmail = $errName = $errPhone = "";
 $name = $email = $phone = "";
-$message = "Estaremos entrando em contato por ligação ou uma mensagem no WhatsApp";
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-    $name = validateInputs($_POST['name']);
-    if (!preg_match("/^[a-zA-Z-' ]*$/", $name)) {
-        $errName = "Apenas letras e espaços são permitidos";
-    }
-
-    $email = validateInputs($_POST['email']);
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $errEmail = "Formato de e-mail inválido";
-    }
-
-    $phone = validateInputs($_POST['phone']);
-    if (strlen($phone) < 11) {
-        $errPhone =  "Insira seu número de telefone completo";
-    }
-
-    sendDataFormToDb($database, $name, $email, $phone);
-    sendEmail($email, $name, $message);
-}
+$message = "Estaremos entrando em contato por ligação ou enviando uma mensagem no WhatsApp";
 
 function validateInputs($data)
 {
@@ -48,14 +30,30 @@ function sendDataFormToDb($database, $name, $email, $phone)
     ]);
 }
 
-function showDataOfDb($database)
-{
-    $query = $database->query('SELECT * FROM clients');
-    $results = $query->fetchAll(PDO::FETCH_ASSOC);
-    $json = json_encode($results);
-    header('Content-Type: application/json');
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    echo $json;
+    $errors = [];
+
+    $name = validateInputs($_POST['name']);
+    if (!preg_match("/^[a-zA-Z-' ]*$/", $name)) {
+        $errors["name"] = "Apenas letras e espaços são permitidos";
+    }
+
+    $email = validateInputs($_POST['email']);
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errors["email"] = "Formato de e-mail inválido";
+    }
+
+    $phone = validateInputs($_POST['phone']);
+    if (strlen($phone) < 11) {
+        $errors["phone"] = "Insira seu número de telefone completo";
+    }
+
+    if (empty($errors)) {
+        sendDataFormToDb($database, $name, $email, $phone);
+        sendEmail($email, $name, $message);
+        echo json_encode(["success" => true]);
+    } else {
+        echo json_encode(["success" => false, "errors" => $errors]);
+    }
 }
-
-showDataOfDb($database);
