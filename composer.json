@@ -1,14 +1,19 @@
 {
-  "name": "rodolpho.toppan/php-guanabara",
+  "name": "rodolpho.toppan/petshop-api",
   "autoload": {
     "psr-4": {
       "app\\": "app/"
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "tests\\": "tests/"
+    }
+  },
   "require": {
-    "slim/slim": "^4.12",
-    "league/plates": "^3.5",
-    "phpmailer/phpmailer": "^6.8",
-    "slim/psr7": "^1.6"
+    "phpmailer/phpmailer": "^6.8"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^10"
   }
 }

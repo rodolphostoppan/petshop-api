@@ -20,10 +20,4 @@ function sendEmail($email, $name, $message)
     $mail->addAddress($email, $name);
     $mail->Subject = 'Contato site';
     $mail->Body = $message;
-
-    if (!$mail->send()) {
-        echo 'Mailer Error: ' . $mail->ErrorInfo;
-    } else {
-        echo 'Message sent!';
-    }
 }
