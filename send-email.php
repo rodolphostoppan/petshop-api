@@ -20,4 +20,5 @@ function sendEmail($email, $name, $message)
     $mail->addAddress($email, $name);
     $mail->Subject = 'Contato site';
     $mail->Body = $message;
+    $mail->send();
 }

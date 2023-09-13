@@ -5,7 +5,7 @@ Essa aplicação foi desenvolvida para executar todo o backend, desde tratamento
 ## Pré-Requisitos
 
 - Linguagem de programação: PHP 8.1+
-- Dependências: Composer, PHP Mailer
+- Dependências: Composer
 
 ## Instalação
 
