@@ -1,11 +1,10 @@
 <?php
 
+
+require 'src/Controller.php';
 require 'send-email.php';
 require 'ValidateInputs.php';
 
-// header("Access-Control-Allow-Origin: http://localhost:8000");
-// header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
-// header("Access-Control-Allow-Headers: Content-Type, application/json");
 header('Content-Type: application/json; charset=utf-8');
 
 $database = new PDO('sqlite:petshop.db', '', '');
@@ -14,7 +13,17 @@ $validateInputs = new ValidateInputs();
 $name = $email = $phone = "";
 $message = "Estaremos entrando em contato por ligação ou enviando uma mensagem no WhatsApp";
 
-function sendDataFormToDb($database, $name, $email, $phone)
+
+use src\Controller;
+$requestMethod = $_SERVER["REQUEST_METHOD"];
+$controller = new Controller($requestMethod);
+
+$controller->processRequest();
+
+exit();
+
+
+function sendDataFormToDb( $database, $name, $email, $phone )
 {
     $sql = "INSERT INTO clients (name, email, phone) VALUES (?, ?, ?)";
     $stmt = $database->prepare($sql);

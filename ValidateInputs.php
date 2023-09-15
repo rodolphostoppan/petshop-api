@@ -4,13 +4,14 @@ class ValidateInputs
 {
     public $data;
 
-    public function validation($data)
+    public function validation($input)
     {
-        $data = trim($data);
-        $data = preg_replace('/\s+/', ' ', $data);
-        $data = stripslashes($data);
-        $data = htmlspecialchars($data);
+        $this->data = trim($input);
+        $this->data = preg_replace('/\s+/', ' ', $input);
+        $this->data = stripslashes($input);
+        $this->data = htmlspecialchars($input);
+        $this->data = htmlentities($input);
 
-        return $data;
+        return $this->data;
     }
 }
