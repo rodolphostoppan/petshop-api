@@ -2,9 +2,9 @@
 
 use PHPUnit\Framework\TestCase;
 
-require 'ValidateInputs.php';
+require 'Sanitization.php';
 
-class ValidateInputsTest extends TestCase
+class SanitizationTest extends TestCase
 {
     public function testValidationRemovesWhitespace()
     {
