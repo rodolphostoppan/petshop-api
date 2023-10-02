@@ -1,59 +1,54 @@
 <?php
 
-require 'send-email.php';
+use src\Controller;
 
-header("Access-Control-Allow-Origin: *"); // Allow requests from any domain
+require 'src/Controller.php';
+
 header("Content-Type: application/json; charset=UTF-8");
+header("Access-Control-Allow-Methods: POST");
+header("Access-Control-Max-Age: 3600");
+header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-$database = new PDO('sqlite:petshop.db', '', '');
+$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$uri = explode('/', $uri);
 
-$name = $email = $phone = "";
-$message = "Estaremos entrando em contato por ligação ou enviando uma mensagem no WhatsApp";
-
-function validateInputs($data)
-{
-    $data = trim($data);
-    $data = stripslashes($data);
-    $data = htmlspecialchars($data);
-
-    return $data;
+if ($uri[1] != 'send-email' || count($uri) > 2 || $_SERVER["REQUEST_METHOD"] !== 'POST') {
+    header(http_response_code(404));
+    exit;
 }
 
-function sendDataFormToDb($database, $name, $email, $phone)
-{
-    $prepare = $database->prepare('INSERT INTO clients (name, email, phone) VALUES (:name, :email, :phone)');
+$requestMethod = $_SERVER["REQUEST_METHOD"];
+$controller = new Controller($requestMethod);
 
-    $prepare->execute([
-        'name' => $name,
-        'email' => $email,
-        'phone' => $phone
-    ]);
+try {
+    $controller->processRequest();
+} catch (Exception $exception) {
+    $errorMessages = json_decode($exception->getMessage(), true);
+    $response = [
+        'success' => false,
+        'message' => 'Verifique os campos novamente',
+        'errors' => $errorMessages
+    ];
+    header("Access-Control-Allow-Origin: *", http_response_code($exception->getCode()));
+    echo json_encode($response);
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+//$database = new PDO('sqlite:petshop.db', '', '');
 
-    $errors = [];
-
-    $name = validateInputs($_POST['name']);
-    if (!preg_match("/^[a-zA-Z-' ]*$/", $name)) {
-        $errors["name"] = "Apenas letras e espaços são permitidos";
-    }
-
-    $email = validateInputs($_POST['email']);
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $errors["email"] = "Formato de e-mail inválido";
-    }
-
-    $phone = validateInputs($_POST['phone']);
-    if (strlen($phone) < 11) {
-        $errors["phone"] = "Insira seu número de telefone completo";
-    }
-
-    if (empty($errors)) {
-        sendDataFormToDb($database, $name, $email, $phone);
-        sendEmail($email, $name, $message);
-        echo json_encode(["success" => true]);
-    } else {
-        echo json_encode(["success" => false, "errors" => $errors]);
-    }
-}
+//function sendDataFormToDb( $database, $name, $email, $phone )
+//{
+//    $sql = "INSERT INTO clients (name, email, phone) VALUES (?, ?, ?)";
+//    $stmt = $database->prepare($sql);
+//    $stmt->execute([
+//        $name,
+//        $email,
+//        $phone
+//    ]);
+//    // $prepare = $database->prepare('INSERT INTO clients (name, email, phone) VALUES (?, ?, ?)');
+//
+//    // $prepare->execute([
+//    //     'name' => $name,
+//    //     'email' => $email,
+//    //     'phone' => $phone
+//    // ]);
+//}

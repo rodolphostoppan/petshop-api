@@ -1,0 +1,32 @@
+version: "3.7"
+
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - 81:80
+    networks:
+      - backend
+    volumes:
+      - ./:/var/www/html
+      - ./docker/nginx/conf:/etc/nginx/conf.d
+      - ./docker/nginx/logs:/var/log/nginx/
+    depends_on:
+      - api
+
+  api:
+    build:
+      context: ./docker/php
+      dockerfile: ./Dockerfile
+    container_name: php
+    networks:
+      - backend
+    volumes:
+      - ./:/var/www/html
+    environment:
+      XDEBUG_CONFIG: client_host=172.17.0.1
+      PHP_IDE_CONFIG: serverName=localhost
+
+networks:
+  backend:

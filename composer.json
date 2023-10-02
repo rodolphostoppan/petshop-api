@@ -2,7 +2,7 @@
   "name": "rodolpho.toppan/petshop-api",
   "autoload": {
     "psr-4": {
-      "app\\": "app/"
+      "src\\": "src/"
     }
   },
   "autoload-dev": {
