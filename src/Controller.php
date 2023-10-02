@@ -1,10 +1,9 @@
 <?php
 
-namespace src;
+namespace src\Controller;
 
-require 'Sanitization.php';
-require 'SendEmailService.php';
-require 'Validation.php';
+use src\SendEmailService\SendEmailService;
+use src\Validation\Validation;
 
 class Controller
 {

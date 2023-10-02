@@ -1,6 +1,6 @@
 <?php
 
-namespace src;
+namespace src\Sanitization;
 class Sanitization
 {
     public function sanitizeInputs(string $input): string

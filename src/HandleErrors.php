@@ -1,16 +1,13 @@
 <?php
 
-namespace src;
+namespace src\HandleErrors;
 
 class HandleErrors
 {
-    private array $errors;
+    private array $errors = [];
 
-    public function setError(string $field, string $message)
+    public function setError(string $field, string $message): void
     {
-        if (!isset($this->errors[$field])) {
-            $this->errors[$field] = [];
-        }
         $this->errors[$field][] = $message;
     }
 
@@ -24,8 +21,8 @@ class HandleErrors
         return !empty($this->errors);
     }
 
-    public function clearErrors(): array
+    public function clearErrors(): void
     {
-        return $this->errors = [];
+        $this->errors = [];
     }
 }

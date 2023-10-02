@@ -1,8 +1,10 @@
 <?php
 
-namespace src;
+namespace src\Validation;
 
 use Exception;
+use src\HandleErrors\HandleErrors;
+use src\Sanitization\Sanitization;
 
 require 'HandleErrors.php';
 

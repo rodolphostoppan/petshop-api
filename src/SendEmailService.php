@@ -1,9 +1,7 @@
 <?php
 
-namespace src;
-require './vendor/autoload.php';
+namespace src\SendEmailService;
 
-use PHPMailer\PHPMailer\PHPMailer;
 
 class SendEmailService
 {
@@ -12,7 +10,6 @@ class SendEmailService
         $message = 'Estaremos entrando em contato por ligação ou enviando uma mensagem no WhatsApp';
 
         date_default_timezone_set('Etc/UTC');
-        $mail = new PHPMailer();
 
         $mail->isSMTP();
         $mail->Host = 'smtp-relay.brevo.com';
